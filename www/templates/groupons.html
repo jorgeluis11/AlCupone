@@ -1,0 +1,32 @@
+<ion-view>
+  <ion-content overflow-scroll="true">
+   <ion-list>
+        <div id="groupon-container-list" >
+          <div class="list groupon-list animate-repeat" ng-repeat="groupon in groupons.items" >
+            <!-- <div class="bar bar-subheader" ng-hide="perspective && groupons.start === 0">
+              start{{groupons.start}}
+              <h2 class="title">Sub Header</h2>
+            </div> -->
+            <a class="item item-link" ng-class="{box: perspective===true, list: perspective===false}">
+              <img class="groupon-image" ng-src="{{groupon.image}}">
+              <h1 class="price">
+                <span>
+                  {{groupon.price}}
+                </span>
+              </h1>
+
+              <i class="from-logo {{groupon.from}}">
+              </i>
+              <div class="clear" ng-show="perspective"></div>
+
+              <h2 class="title">
+                {{groupon.title | limitTo : ((perspective==true)?125:167)}}
+                {{groupon.title.length > ((perspective==true)?125:167) ? '...' : ''}}
+              </h2>
+             
+            </a>
+          </div>
+        </div>
+      </ion-list>
+  </ion-content>
+</ion-view>
