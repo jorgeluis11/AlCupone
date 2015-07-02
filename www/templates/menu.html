@@ -10,9 +10,7 @@
         </button>
       </ion-nav-buttons>
       <ion-nav-buttons side="right">
-          <button class="button button-icon ion-android-apps" ng-click="changePerspective(false);" ng-class="{typeList: perspective === false}"></button>
-
-          <button class="button button-icon ion-ios-list-outline" ng-click="changePerspective(true);" ng-class="{typeList: perspective === true}"></button>
+          <button type="button" class="button button-icon" ng-click="changePerspective()" ng-class="{'ion-android-apps': perspective===false, 'ion-ios-list-outline': perspective===true}"></button>
       </ion-nav-buttons>
     </ion-nav-bar>
     <ion-nav-view name="menuContent"></ion-nav-view>
@@ -34,7 +32,6 @@
                       ng-model="item.checked" 
                       ng-checked="item.checked">
             <div class="groupon-image from-logo {{item.text}}"></div>
-
           </ion-toggle>
         </ion-item>
            

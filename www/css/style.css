@@ -162,7 +162,10 @@ body{
 	padding-bottom: 0 !important;
 
 }
-
+#groupon-ion-list{
+	height: 100%;
+	width: 100%;
+}
 .groupon-list>a
 {
 	padding-top: 0px !important; 
@@ -206,7 +209,7 @@ body{
 	float:left;
     height: 60px;
     width: 50%;
-    background: url("../img/logos.png") center center no-repeat;
+    background: url("../img/logo2.png") center center no-repeat;
 	background-color:#FA563A;
 }
 
@@ -228,6 +231,11 @@ body{
     vertical-align: center;
 }
 
+.list
+{
+	padding-top: 0px;
+}
+
 .list > .title
 {
 	float:right;
@@ -243,8 +251,9 @@ body{
 .list > .groupon-image{
 	float:left;
 	width: 40%;
-	background: url("../img/logos.png") bottom right no-repeat;
+	background: url("../img/logo2.png") bottom right no-repeat;
 	margin-bottom: 40px;
+	max-height: 300px;
 }
 
 .list>.groupon-logo-container{
@@ -282,7 +291,7 @@ body{
     display: block;
     width: auto;
     height: 50px;
-    background: url("../img/logos.png") top left no-repeat;
+    background: url("../img/logo2.png") top left no-repeat;
 }
 
 .from-logo.groopanda {
@@ -300,19 +309,22 @@ body{
 .from-logo.ofertones {
     background-position: 0px -245px;
 }
-.from-logo.peroQueDescuentos {
+.from-logo.peroquedescuentos {
     background-position: 0px -300px;
 }
-.from-logo.turistazo {
-    background-position: 0px -360px;
+
+.from-logo.kokigo {
+    background-position: 0px -586px;
 }
-.from-logo.agrupalos {
-    background-position: 0px -420px;
+.from-logo.prgoza {
+    background-position: 0px -658px;
 }
-.from-logo.laPulguilla {
-    background-position: 0px -540px;
+.from-logo.puertoricolike {
+    background-position: 0px -735px;
 }
 
+
+/* BOX LOGO */
 .box>.from-logo.groopanda {
     background-position: 3px 0px;
 }
@@ -328,17 +340,18 @@ body{
 .box>.from-logo.ofertones {
     background-position: 0px -240px;
 }
-.box>.from-logo.peroQueDescuentos {
+.box>.from-logo.peroquedescuentos {
     background-position: 0px -300px;
 }
-.box>.from-logo.turistazo {
-    background-position: 0px -360px;
+
+.box>.from-logo.kokigo {
+    background-position: 0px -586px;
 }
-.box>.from-logo.agrupalos {
-    background-position: 0px -420px;
+.box>.from-logo.prgoza {
+    background-position: 0px -658px;
 }
-.box>.from-logo.laPulguilla {
-    background-position: 0px -540px;
+.box>.from-logo.puertoricolike {
+    background-position: 0px -735px;
 }
 
 .department-label{

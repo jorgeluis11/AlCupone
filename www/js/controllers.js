@@ -1,16 +1,23 @@
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', ['$scope','$http','$ionicModal', '$timeout',function($scope,$http, $ionicModal, $timeout) {
+.controller('AppCtrl', ['$scope','$http','$ionicModal', '$timeout','$q',function($scope,$http, $ionicModal, $timeout, $q) {
   // Form data for the login modal
   $scope.loginData = {};
+  $scope.settingsList = [];
+  $scope.list = []
+  $scope.noMoreItemsAvailable = false;
 
-  $scope.settingsList = [
-    { text: "gustazos", checked: true },
-    { text: "groopanda", checked: true },
-    { text: "oferta", checked: true },
-    { text: "ofertones", checked: true },
-    { text: "groupon", checked: true }
-  ];
+   //[
+  //   { text: "gustazos", checked: true },
+  //   { text: "groopanda", checked: true },
+  //   { text: "oferta", checked: true },
+  //   { text: "ofertones", checked: true },
+  //   { text: "groupon", checked: true },
+  //   { text: "peroquedescuentos", checked: true },
+  //   { text: "kokigo", checked: true },
+  //   { text: "prgoza", checked: true },
+  //   { text: "puertoricolike", checked: true }
+  // ];
 
   $scope.moveItem = function(item, fromIndex, toIndex) {
     $scope.settingsList.splice(fromIndex, 1);
@@ -50,40 +57,122 @@ angular.module('starter.controllers', [])
 
   $scope.list = ""
   $scope.perspective = true;
-
-  $scope.changePerspective = function(value){
-    $scope.perspective = value;
+  $scope.noMoreItemsAvailable = false;
+$scope.firstLoaded  = false;
+  $scope.changePerspective = function(){
+    $scope.perspective = !$scope.perspective;
   };
+
+  $scope.loadMore = function() {
+    if ($scope.noMoreItemsAvailable === false && $scope.firstLoaded === true) 
+      {
+        $scope.noMoreItemsAvailable = true;
+        $scope.list = ""
+        for(list in $scope.settingsList){
+          if ($scope.settingsList[list].checked === true) 
+            $scope.list += $scope.settingsList[list].text+",";
+        }
+
+        console.log($scope.list)
+        $http.get("https://gruponaso.herokuapp.com/",{
+        // timeout: canceler.promise,
+         params:{
+            start:$scope.groupons.start,
+            index:$scope.groupons.index,
+            list:$scope.list
+          }
+          }).success(function(data)
+          {
+            $scope.groupons.items.push(data.groupons.items);
+            $scope.noMoreItemsAvailable = false;
+            $scope.$broadcast('scroll.infiniteScrollComplete');
+          });
+        // $scope.$broadcast('scroll.infiniteScrollComplete');
+
+      };
+    // $http.get('/more-items').success(function(items) {
+    //   useItems(items);
+    //   $scope.$broadcast('scroll.infiniteScrollComplete');
+    // });
+    $scope.noMoreItemsAvailable = false;
+    console.log("change")
+          $scope.$broadcast('scroll.infiniteScrollComplete');
+
+  };
+
+  $scope.$on('$stateChangeSuccess', function() {
+    $scope.loadMore();
+  });
 
   $scope.getList = function(){
     $scope.groupons = []
     $scope.list = ""
-
     for(list in $scope.settingsList){
-    if ($scope.settingsList[list].checked === true) {
-      $scope.list += $scope.settingsList[list].text+",";
-    };
+      if ($scope.settingsList[list].checked === true) {
+        $scope.list += $scope.settingsList[list].text+",";
+      };
+    }
+
+        // var canceler = $q.defer();
+        // canceler.resolve();  // Aborts the $http request if it isn't finished.
+
+        $http.get("https://gruponaso.herokuapp.com/",{
+        // timeout: canceler.promise,
+         params:{
+            start:0,
+            index:0,
+            list:$scope.list
+          }
+          }).success(function(data)
+          {
+
+            $scope.groupons = data;
+          });
   }
 
-  if ($scope.list === "") {
-    $scope.list = ",";
-  };
+  // if ($scope.list === "") {
+  //   $scope.list = ",";
+  // };
 
-  $http.get("https://gruponaso.herokuapp.com/",{
-     params:{
-        start:0,
-        index:0,
-        list:$scope.list
-      }
-  })
-  .success(function(data)
+$http.get("https://gruponaso.herokuapp.com/pages").success(function(data)
     {
-      $scope.groupons = data;
-      console.log($scope.groupons)
-    });
-  }
+      data.pages=shuffle(data.pages)
+      $scope.list = data.pages;
+      var dic = []
+      for (var i = 0; i < data.pages.length; i++) {
+        dic.push({text: data.pages[i], checked: true})
+      };
 
-    $scope.getList();
+        $scope.settingsList = dic;
+        
+
+        $http.get("https://gruponaso.herokuapp.com/",{
+         params:{
+            start:0,
+            index:0,
+            list:$scope.list.toString()
+          }
+          }).success(function(data)
+          {
+            $scope.groupons = data;
+            $scope.firstLoaded = true;
+          });
+    });
+    
+   
+  
+
+  function shuffle(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+    return array;
+}
+
+    // $scope.getList();
 }])
 
 // .controller('GrouponsCtrl', ['$scope','$http', function($scope, $http) {

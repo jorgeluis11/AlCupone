@@ -1,6 +1,7 @@
 <ion-view>
-  <ion-content overflow-scroll="true">
-   <ion-list>
+  <!-- <ion-content overflow-scroll="true"> -->
+  <ion-content>
+   <ion-list id="groupon-ion-list">
         <div id="groupon-container-list" >
           <div class="list groupon-list animate-repeat" ng-repeat="groupon in groupons.items" >
             <!-- <div class="bar bar-subheader" ng-hide="perspective && groupons.start === 0">
@@ -28,5 +29,7 @@
           </div>
         </div>
       </ion-list>
+        <!-- <ion-infinite-scroll on-infinite="loadMore()" distance="1%"></ion-infinite-scroll> -->
   </ion-content>
+
 </ion-view>
