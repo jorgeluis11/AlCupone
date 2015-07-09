@@ -1,4 +1,15 @@
 angular.module('starter.controllers', [])
+.directive('link', [function () {
+  return {
+    restrict: 'A',
+    scope:{},
+    link: function (scope, element, attrs) {
+      element.on('click',function(){
+      window.open(attrs.url, '_system', 'location=yes');      
+      });
+    }
+  };
+}])
 
 .controller('AppCtrl', ['$scope','$http','$ionicModal', '$timeout','$q',function($scope,$http, $ionicModal, $timeout, $q) {
   // Form data for the login modal
@@ -57,52 +68,59 @@ angular.module('starter.controllers', [])
 
   $scope.list = ""
   $scope.perspective = true;
-  $scope.noMoreItemsAvailable = false;
-$scope.firstLoaded  = false;
+  $scope.firstLoaded  = false;
   $scope.changePerspective = function(){
     $scope.perspective = !$scope.perspective;
   };
 
   $scope.loadMore = function() {
-    if ($scope.noMoreItemsAvailable === false && $scope.firstLoaded === true) 
-      {
-        $scope.noMoreItemsAvailable = true;
         $scope.list = ""
         for(list in $scope.settingsList){
           if ($scope.settingsList[list].checked === true) 
             $scope.list += $scope.settingsList[list].text+",";
         }
 
-        console.log($scope.list)
+        console.log($scope.groupons)
         $http.get("https://gruponaso.herokuapp.com/",{
         // timeout: canceler.promise,
          params:{
-            start:$scope.groupons.start,
+            start:$scope.groupons.end,
             index:$scope.groupons.index,
             list:$scope.list
           }
           }).success(function(data)
           {
-            $scope.groupons.items.push(data.groupons.items);
-            $scope.noMoreItemsAvailable = false;
+            for (var i = 0;  i < data.items.length; i++) {
+              $scope.groupons.items.push(data.items[i]);
+            };
+            
+            if (data.index ===$scope.groupons.index) 
+             { 
+              $scope.groupons.start = data.start ;
+              $scope.groupons.end = data.start + 6 ;
+
+             }else
+             { 
+              $scope.groupons.start = data.start;
+              $scope.groupons.end = data.start + 6 ;
+             }
+            $scope.groupons.index = data.index;
+
+            // $scope.noMoreItemsAvailable = false;
             $scope.$broadcast('scroll.infiniteScrollComplete');
           });
         // $scope.$broadcast('scroll.infiniteScrollComplete');
 
-      };
-    // $http.get('/more-items').success(function(items) {
+
+          // $http.get('/more-items').success(function(items) {
     //   useItems(items);
     //   $scope.$broadcast('scroll.infiniteScrollComplete');
     // });
-    $scope.noMoreItemsAvailable = false;
-    console.log("change")
-          $scope.$broadcast('scroll.infiniteScrollComplete');
-
   };
 
-  $scope.$on('$stateChangeSuccess', function() {
-    $scope.loadMore();
-  });
+  // $scope.$on('$stateChangeSuccess', function() {
+  //   $scope.loadMore();
+  // });
 
   $scope.getList = function(){
     $scope.groupons = []
@@ -127,6 +145,7 @@ $scope.firstLoaded  = false;
           {
 
             $scope.groupons = data;
+            // $scope.noMoreItemsAvailable = false;
           });
   }
 
@@ -156,6 +175,7 @@ $http.get("https://gruponaso.herokuapp.com/pages").success(function(data)
           {
             $scope.groupons = data;
             $scope.firstLoaded = true;
+            $scope.noMoreItemsAvailable = true;
           });
     });
     
@@ -181,4 +201,4 @@ $http.get("https://gruponaso.herokuapp.com/pages").success(function(data)
 // }])
 
 .controller('PlaylistCtrl', function($scope, $stateParams) {
-});
+})

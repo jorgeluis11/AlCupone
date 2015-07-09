@@ -8,7 +8,7 @@
               start{{groupons.start}}
               <h2 class="title">Sub Header</h2>
             </div> -->
-            <a class="item item-link" ng-class="{box: perspective===true, list: perspective===false}">
+            <a class="item item-link" link url="{{groupon.link}}" ng-class="{box: perspective===true, list: perspective===false}">
               <img class="groupon-image" ng-src="{{groupon.image}}">
               <h1 class="price">
                 <span>
@@ -29,7 +29,8 @@
           </div>
         </div>
       </ion-list>
-        <!-- <ion-infinite-scroll on-infinite="loadMore()" distance="1%"></ion-infinite-scroll> -->
+        <ion-infinite-scroll ng-if="noMoreItemsAvailable" on-infinite="loadMore()" distance="5%"></ion-infinite-scroll>
+        
   </ion-content>
 
 </ion-view>
